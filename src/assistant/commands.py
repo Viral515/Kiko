@@ -37,7 +37,7 @@ class CommandManager:
                     best_match = cmd
 
         # Порог: например, 0.7
-        return best_match if best_score > 0.7 else None
+        return best_match if best_score > 0.85 else None
 
     def get_random_response(self, cmd, response_type="tts"):
         """Возвращает случайный ответ из списка"""
@@ -51,25 +51,9 @@ class CommandManager:
         action = cmd["action"]
         action_type = action["type"]
         target = action.get("target")
+        args = action.get("args", [])
 
         print("Выполняется команда: " + action_type + " " + target)
-
-        # --- Выполняем действие ---
-        if action_type == "run":
-            subprocess.run(target, shell=True)
-
-        elif action_type == "open_url":
-            webbrowser.open(target.strip())
-
-        elif action_type == "close":
-            self.close_process(target)
-
-        elif action_type == "key":
-            self.send_keys(target)
-
-        elif action_type == "exit":
-            tts_speaker.speak("До свидания, сэр!")
-            sys.exit(0)
 
         # --- Проигрываем ответ ---
         responses = cmd.get("responses", {})
@@ -83,36 +67,35 @@ class CommandManager:
             tts_text = random.choice(tts_list)
             tts_speaker.speak(tts_text)
 
-    # --- Вспомогательные методы ---
-    def close_process(self, process_name):
-        """Закрывает процесс по имени (например, calc.exe)"""
-        for proc in psutil.process_iter(['pid', 'name']):
-            if proc.info['name'].lower() == process_name.lower():
-                proc.kill()
-                return
+        if action_type == "script":
+            self.run_script(target, args)
+        elif action_type == "speak":
+            print("Karma +1")
+        elif action_type == "exit":
+                sys.exit(0)
 
-    def send_keys(self, keys):
-        """Отправляет комбинацию клавиш, например 'ctrl+w'"""
-        keys = keys.lower().split('+')
-        keys = [k.strip() for k in keys]
 
-        # Поддержка: ctrl, alt, shift, win
-        mods = {
-            'ctrl': 'ctrl',
-            'alt': 'alt',
-            'shift': 'shift',
-            'win': 'win'
-        }
-        key = None
-        args = []
 
-        for k in keys:
-            if k in mods:
-                args.append(mods[k])
+    def run_script(self, script_path, args):
+        """Запускает внешний скрипт (PowerShell, CMD, Python)"""
+        if not os.path.exists(script_path):
+            print(f"❌ Скрипт не найден: {script_path}")
+            return
+
+        try:
+            # Определяем, как запускать
+            if script_path.endswith(".ps1"):
+                # PowerShell
+                subprocess.run([
+                    "powershell", "-ExecutionPolicy", "Bypass", "-File", script_path
+                ] + args, check=True, shell=True)
+            elif script_path.endswith(".bat") or script_path.endswith(".cmd"):
+                # CMD
+                subprocess.run([script_path] + args, check=True, shell=True)
+            elif script_path.endswith(".py"):
+                # Python
+                subprocess.run(["python", script_path] + args, check=True)
             else:
-                key = k
-
-        if key and args:
-            pyautogui.hotkey(*args, key)
-        elif key:
-            pyautogui.press(key)
+                print(f"❌ Неизвестный тип скрипта: {script_path}")
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Ошибка выполнения скрипта: {e}")
