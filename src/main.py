@@ -1,4 +1,3 @@
-# main.py
 from assistant.core import VoiceAssistant
 
 if __name__ == "__main__":

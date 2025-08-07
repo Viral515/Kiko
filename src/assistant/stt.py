@@ -1,4 +1,3 @@
-# assistant/stt.py
 from vosk import Model, KaldiRecognizer
 import pyaudio
 

@@ -1,4 +1,3 @@
-# assistant/core.py
 from assistant.stt import STTListener
 from assistant.tts import TTSSpeaker
 from assistant.commands import CommandManager
@@ -31,6 +30,6 @@ class VoiceAssistant:
                 if cmd:
                     self.commands.execute(cmd, self.tts)
                 else:
-                    self.tts.speak("Не понял команду.")
+                    self.tts.play_sound("whatAreYouDoing")
                 print("🎙️ Ожидание команды... (скажите 'джарвис' снова)")
                 self.listening_for_wake = True

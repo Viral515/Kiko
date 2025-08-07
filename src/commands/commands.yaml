@@ -1,5 +1,3 @@
-# commands/commands.yaml
-
 - id: open_browser
   triggers:
     - "браузер"
@@ -12,10 +10,25 @@
     type: open_url
     target: "https://google.com"
   responses:
-    sound:  # Быстрые звуки (из папки sounds/)
+    sound:
       - ok
       - requestCompleted
-    tts:  # Фразы для TTS (если нужно сгенерировать)
+    tts:
+
+- id: open_youtube
+  triggers:
+    - "ютуб"
+    - "открой ютуб"
+    - "видосы"
+    - "включи ютуб"
+  action:
+    type: open_url
+    target: "https://youtube.com"
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
 
 - id: open_calculator
   triggers:
@@ -31,15 +44,28 @@
       - requestCompleted
     tts:
 
-- id: open_music
+- id: close_calculator
   triggers:
-    - "ютуб"
-    - "открой ютуб"
-    - "включи ютуб"
-    - "открой youtube"
+    - "закрой калькулятор"
+    - "выруби калькулятор"
+    - "сверни калькулятор"
+    - "убери калькулятор"
   action:
-    type: open_url
-    target: "https://youtube.com"
+    type: close
+    target: "CalculatorApp.exe"
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: close_last_browser_tab
+  triggers:
+    - "закрой последнюю вкладку"
+    - "закрой вкладку"
+  action:
+    type: key
+    target: "ctrl+w"
   responses:
     sound:
       - ok
@@ -54,6 +80,7 @@
     - "спокойной ночи"
   action:
     type: exit
+    target: "none"
   responses:
     sound:
     tts:

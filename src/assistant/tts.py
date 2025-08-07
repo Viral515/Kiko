@@ -1,4 +1,3 @@
-# assistant/tts.py
 from TTS.api import TTS
 import pygame
 import threading
