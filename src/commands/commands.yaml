@@ -1,0 +1,60 @@
+# commands/commands.yaml
+
+- id: open_browser
+  triggers:
+    - "браузер"
+    - "открой браузер"
+    - "интернет"
+    - "включи интернет"
+    - "гугл"
+    - "открой гугл"
+  action:
+    type: open_url
+    target: "https://google.com"
+  responses:
+    sound:  # Быстрые звуки (из папки sounds/)
+      - ok
+      - requestCompleted
+    tts:  # Фразы для TTS (если нужно сгенерировать)
+
+- id: open_calculator
+  triggers:
+    - "калькулятор"
+    - "открой калькулятор"
+    - "запусти калькулятор"
+  action:
+    type: run
+    target: "calc.exe"
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: open_music
+  triggers:
+    - "ютуб"
+    - "открой ютуб"
+    - "включи ютуб"
+    - "открой youtube"
+  action:
+    type: open_url
+    target: "https://youtube.com"
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: shutdown
+  triggers:
+    - "пока"
+    - "до свидания"
+    - "выключись"
+    - "спокойной ночи"
+  action:
+    type: exit
+  responses:
+    sound:
+    tts:
+      - "До свидания, сэр!"
