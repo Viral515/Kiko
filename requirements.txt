@@ -1,0 +1,13 @@
+# Основные зависимости для голосового ассистента
+vosk==0.3.45
+TTS==0.22.0
+pygame==2.5.2
+pyyaml==6.0.1
+python-Levenshtein==0.23.0
+requests==2.31.0
+
+# Зависимости для tray icon
+pystray==0.19.4
+Pillow==10.1.0
+
+# PyAudio устанавливается отдельно через pipwin или wheel файл

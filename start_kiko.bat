@@ -1,0 +1,9 @@
+@echo off
+echo Starting Kiko Voice Assistant...
+cd /d "%~dp0"
+echo Current directory: %CD%
+echo Checking Python...
+python --version
+echo Starting main.py...
+python src/main.py
+pause

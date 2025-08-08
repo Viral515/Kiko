@@ -6,19 +6,28 @@ import os
 class TTSSpeaker:
     def __init__(self):
         self.tts = TTS(model_name="tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
-        self.sounds_dir = "sounds"
+        
+        # Получаем абсолютный путь к папке звуков
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.sounds_dir = os.path.join(current_dir, "sounds")
+        
+        print(f"🔊 Папка звуков: {self.sounds_dir}")
 
     def speak(self, text):
         """Озвучивает текст через TTS"""
         def _run():
             try:
+                # Получаем абсолютный путь к голосовому образцу
+                voice_sample_path = os.path.join(self.sounds_dir, "voiceSample", "JarvisVoiceSample.wav")
+                temp_speech_path = os.path.join(os.path.dirname(self.sounds_dir), "temp_speech.wav")
+                
                 self.tts.tts_to_file(
                     text=text,
-                    speaker_wav="sounds/voiceSample/JarvisVoiceSample.wav",
+                    speaker_wav=voice_sample_path,
                     language="ru",
-                    file_path="temp_speech.wav"
+                    file_path=temp_speech_path
                 )
-                self._play_audio("temp_speech.wav")
+                self._play_audio(temp_speech_path)
             except Exception as e:
                 print(f"❌ Ошибка TTS: {e}")
 

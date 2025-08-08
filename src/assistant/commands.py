@@ -8,8 +8,13 @@ import glob
 
 class CommandManager:
     def __init__(self, commands_dir="commands"):
+        # Получаем абсолютный путь к папке команд
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        commands_path = os.path.join(current_dir, commands_dir)
+        
+        print(f"📁 Загрузка команд из: {commands_path}")
         self.commands = []
-        self.load_all_commands(commands_dir)
+        self.load_all_commands(commands_path)
 
     def load_all_commands(self, commands_dir):
         """Загружает все YAML файлы из папки commands"""
@@ -90,22 +95,28 @@ class CommandManager:
 
     def run_script(self, script_path, args):
         """Запускает внешний скрипт (PowerShell, CMD, Python)"""
-        if not os.path.exists(script_path):
-            print(f"❌ Скрипт не найден: {script_path}")
+        # Получаем абсолютный путь к скрипту
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        absolute_script_path = os.path.join(current_dir, script_path)
+        
+        print(f"🔧 Выполнение скрипта: {absolute_script_path}")
+        
+        if not os.path.exists(absolute_script_path):
+            print(f"❌ Скрипт не найден: {absolute_script_path}")
             return
 
         try:
             # Определяем, как запускать
             if script_path.endswith(".ps1"):
                 subprocess.run([
-                    "powershell", "-ExecutionPolicy", "Bypass", "-File", script_path
+                    "powershell", "-ExecutionPolicy", "Bypass", "-File", absolute_script_path
                 ] + args, check=True, shell=True)
             elif script_path.endswith(".bat") or script_path.endswith(".cmd"):
-                subprocess.run([script_path] + args, check=True, shell=True)
+                subprocess.run([absolute_script_path] + args, check=True, shell=True)
             elif script_path.endswith(".py"):
-                subprocess.run(["python", script_path] + args, check=True)
+                subprocess.run(["python", absolute_script_path] + args, check=True)
             else:
-                print(f"❌ Неизвестный тип скрипта: {script_path}")
+                print(f"❌ Неизвестный тип скрипта: {absolute_script_path}")
         except subprocess.CalledProcessError as e:
             print(f"❌ Ошибка выполнения скрипта: {e}")
         except Exception as e:
