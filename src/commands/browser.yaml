@@ -1,0 +1,33 @@
+- id: open_browser
+  triggers:
+    - "браузер"
+    - "открой браузер"
+    - "интернет"
+    - "включи интернет"
+    - "гугл"
+    - "открой гугл"
+  action:
+    type: script
+    target: "scripts/browser/open_tab.ps1"
+    args: ["https://google.com"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: open_youtube
+  triggers:
+    - "ютуб"
+    - "открой ютуб"
+    - "видосы"
+    - "включи ютуб"
+  action:
+    type: script
+    target: "scripts/browser/open_tab.ps1"
+    args: ["https://youtube.com"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:

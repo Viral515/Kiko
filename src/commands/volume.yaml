@@ -1,0 +1,29 @@
+# Команды управления громкостью системы
+- id: volume_mute
+  triggers:
+    - "выключи звук"
+    - "заглуши звук"
+    - "мут"
+    - "тишина"
+  action:
+    type: script
+    target: "scripts/utils/volume_control.ps1"
+    args: ["mute"]
+  responses:
+    sound:
+      - ok
+    tts:
+
+- id: volume_unmute
+  triggers:
+    - "включи звук"
+    - "включи громкость"
+    - "анмьют"
+  action:
+    type: script
+    target: "scripts/utils/volume_control.ps1"
+    args: ["unmute"]
+  responses:
+    sound:
+      - ok
+    tts:

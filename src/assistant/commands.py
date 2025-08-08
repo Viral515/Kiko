@@ -1,25 +1,40 @@
 import yaml
 import os
 import subprocess
-import webbrowser
 import sys
 import random
 from Levenshtein import ratio
-import pyautogui
-import psutil
-import time
+import glob
 
 class CommandManager:
-    def __init__(self, commands_file="commands/commands.yaml"):
+    def __init__(self, commands_dir="commands"):
         self.commands = []
-        self.load_commands(commands_file)
+        self.load_all_commands(commands_dir)
 
-    def load_commands(self, filepath):
-        if not os.path.exists(filepath):
-            raise FileNotFoundError(f"Файл команд не найден: {filepath}")
+    def load_all_commands(self, commands_dir):
+        """Загружает все YAML файлы из папки commands"""
+        if not os.path.exists(commands_dir):
+            raise FileNotFoundError(f"Папка команд не найдена: {commands_dir}")
 
-        with open(filepath, "r", encoding="utf-8") as f:
-            self.commands = yaml.safe_load(f)
+        yaml_files = glob.glob(os.path.join(commands_dir, "*.yaml"))
+        
+        if not yaml_files:
+            raise FileNotFoundError(f"YAML файлы не найдены в папке: {commands_dir}")
+
+        print(f"Загружаю команды из {len(yaml_files)} файлов...")
+        
+        for yaml_file in yaml_files:
+            try:
+                print(f"Загружаю: {os.path.basename(yaml_file)}")
+                with open(yaml_file, "r", encoding="utf-8") as f:
+                    file_commands = yaml.safe_load(f)
+                    if file_commands:
+                        self.commands.extend(file_commands)
+                        print(f"  Загружено {len(file_commands)} команд")
+            except Exception as e:
+                print(f"❌ Ошибка загрузки {yaml_file}: {e}")
+
+        print(f"Всего загружено команд: {len(self.commands)}")
 
     def find_command(self, text):
         """Находит команду с наилучшим совпадением"""
@@ -29,7 +44,6 @@ class CommandManager:
 
         for cmd in self.commands:
             for trigger in cmd["triggers"]:
-
                 # fuzzy-сравнение
                 score = ratio(trigger, text)
                 if score > best_score:
@@ -72,9 +86,7 @@ class CommandManager:
         elif action_type == "speak":
             print("Karma +1")
         elif action_type == "exit":
-                sys.exit(0)
-
-
+            sys.exit(0)
 
     def run_script(self, script_path, args):
         """Запускает внешний скрипт (PowerShell, CMD, Python)"""
@@ -85,17 +97,16 @@ class CommandManager:
         try:
             # Определяем, как запускать
             if script_path.endswith(".ps1"):
-                # PowerShell
                 subprocess.run([
                     "powershell", "-ExecutionPolicy", "Bypass", "-File", script_path
                 ] + args, check=True, shell=True)
             elif script_path.endswith(".bat") or script_path.endswith(".cmd"):
-                # CMD
                 subprocess.run([script_path] + args, check=True, shell=True)
             elif script_path.endswith(".py"):
-                # Python
                 subprocess.run(["python", script_path] + args, check=True)
             else:
                 print(f"❌ Неизвестный тип скрипта: {script_path}")
         except subprocess.CalledProcessError as e:
             print(f"❌ Ошибка выполнения скрипта: {e}")
+        except Exception as e:
+            print(f"❌ Неожиданная ошибка: {e}")

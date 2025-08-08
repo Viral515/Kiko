@@ -1,0 +1,52 @@
+# Команды запуска игр в Steam
+- id: launch_dota
+  triggers:
+    - "дота"
+    - "дота 2"
+    - "dota"
+    - "dota 2"
+    - "запусти дота"
+    - "запусти дота 2"
+    - "запусти dota"
+    - "запусти dota 2"
+  action:
+    type: script
+    target: "scripts/steam/launch_game.ps1"
+    args: ["dota 2"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: launch_portal
+  triggers:
+    - "портал"
+    - "portal"
+    - "запусти портал"
+    - "запусти portal"
+  action:
+    type: script
+    target: "scripts/steam/launch_game.ps1"
+    args: ["portal 2"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: launch_nightraign
+  triggers:
+    - "ночь"
+    - "ночь ранга"
+    - "запусти ночь"
+    - "запусти nightraign"
+  action:
+    type: script
+    target: "scripts/steam/launch_game.ps1"
+    args: ["nightraign"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:

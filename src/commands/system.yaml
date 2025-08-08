@@ -1,0 +1,28 @@
+- id: thanks
+  triggers:
+    - "спасибо"
+    - "молодец"
+    - "благодарю"
+  action:
+    type: speak
+    target: "none"
+  responses:
+    sound:
+      - thanks
+      - tyPrime
+    tts:
+
+- id: shutdown
+  triggers:
+    - "пока"
+    - "до свидания"
+    - "выключись"
+    - "спокойной ночи"
+    - "пора спать"
+  action:
+    type: exit
+    target: "none"
+  responses:
+    sound:
+    tts:
+      - "До свидания, сэр!"

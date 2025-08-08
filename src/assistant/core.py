@@ -32,9 +32,10 @@ class VoiceAssistant:
                 if cmd:
                     self.commands.execute(cmd, self.tts)
                 else:
-                    self.tts.speak("Думаю...")
-                    response = self.llm.generate(text)
-                    print("🤖 LLM: " + response)
-                    self.tts.speak(response)
+                    self.tts.play_sound("whatAreYouDoing")
+                    #self.tts.speak("Думаю...")
+                    #response = self.llm.generate(text)
+                    #print("🤖 LLM: " + response)
+                    #self.tts.speak(response)
                 print("🎙️ Ожидание команды... (скажите 'джарвис' снова)")
                 self.listening_for_wake = True
