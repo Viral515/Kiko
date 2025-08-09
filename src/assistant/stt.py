@@ -16,7 +16,6 @@ class STTListener:
         self.stream.start_stream()
 
     def listen_once(self):
-        """Слушает одну фразу и возвращает текст"""
         while True:
             data = self.stream.read(4000, exception_on_overflow=False)
             if self.rec.AcceptWaveform(data):

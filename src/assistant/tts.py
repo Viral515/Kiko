@@ -14,10 +14,8 @@ class TTSSpeaker:
         print(f"🔊 Папка звуков: {self.sounds_dir}")
 
     def speak(self, text):
-        """Озвучивает текст через TTS"""
         def _run():
             try:
-                # Получаем абсолютный путь к голосовому образцу
                 voice_sample_path = os.path.join(self.sounds_dir, "voiceSample", "JarvisVoiceSample.wav")
                 temp_speech_path = os.path.join(os.path.dirname(self.sounds_dir), "temp_speech.wav")
                 
@@ -35,7 +33,6 @@ class TTSSpeaker:
         thread.start()
 
     def play_sound(self, name):
-        """Мгновенно проигрывает звук из папки sounds"""
         try:
             sound_file = os.path.join(self.sounds_dir, f"{name}.wav")
             if os.path.exists(sound_file):

@@ -8,16 +8,14 @@ import glob
 
 class CommandManager:
     def __init__(self, commands_dir="commands"):
-        # Получаем абсолютный путь к папке команд
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         commands_path = os.path.join(current_dir, commands_dir)
         
-        print(f"📁 Загрузка команд из: {commands_path}")
+        print(f"Загрузка команд из: {commands_path}")
         self.commands = []
         self.load_all_commands(commands_path)
 
     def load_all_commands(self, commands_dir):
-        """Загружает все YAML файлы из папки commands"""
         if not os.path.exists(commands_dir):
             raise FileNotFoundError(f"Папка команд не найдена: {commands_dir}")
 
@@ -42,24 +40,20 @@ class CommandManager:
         print(f"Всего загружено команд: {len(self.commands)}")
 
     def find_command(self, text):
-        """Находит команду с наилучшим совпадением"""
         text = text.lower().strip()
         best_match = None
         best_score = 0.0
 
         for cmd in self.commands:
             for trigger in cmd["triggers"]:
-                # fuzzy-сравнение
                 score = ratio(trigger, text)
                 if score > best_score:
                     best_score = score
                     best_match = cmd
 
-        # Порог: например, 0.7
         return best_match if best_score > 0.85 else None
 
     def get_random_response(self, cmd, response_type="tts"):
-        """Возвращает случайный ответ из списка"""
         if "responses" not in cmd:
             return None
 
@@ -74,7 +68,6 @@ class CommandManager:
 
         print("Выполняется команда: " + action_type + " " + target)
 
-        # --- Проигрываем ответ ---
         responses = cmd.get("responses", {})
         sound_list = responses.get("sound", [])
         tts_list = responses.get("tts", [])
@@ -94,19 +87,16 @@ class CommandManager:
             sys.exit(0)
 
     def run_script(self, script_path, args):
-        """Запускает внешний скрипт (PowerShell, CMD, Python)"""
-        # Получаем абсолютный путь к скрипту
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         absolute_script_path = os.path.join(current_dir, script_path)
         
-        print(f"🔧 Выполнение скрипта: {absolute_script_path}")
+        print(f" Выполнение скрипта: {absolute_script_path}")
         
         if not os.path.exists(absolute_script_path):
             print(f"❌ Скрипт не найден: {absolute_script_path}")
             return
 
         try:
-            # Определяем, как запускать
             if script_path.endswith(".ps1"):
                 subprocess.run([
                     "powershell", "-ExecutionPolicy", "Bypass", "-File", absolute_script_path
