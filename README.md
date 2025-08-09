@@ -18,13 +18,24 @@ pip install pipwin
 pipwin install pyaudio
 ```
 
-### 2. Запуск
+### 2. Создание .env
+1. Зарегистрируйтесь на [Picovoice Console](https://console.picovoice.ai/)
+2. Получите `AccessKey`
+3. Создайте файл `.env` и вставьте ключ
+```bash
+# Пример содержимого .env файла
+PORCUPINE_ACCESS_KEY=your_access_key_here
+```
+
+### 3. Настройка путей
+
+- Проверьте список доступных команд и замените все абсолютные пути к файлам на актуальные.
+
+### 4. Запуск
 
 **Быстрый запуск:**
 - **`start_kiko.bat`** - запуск с консолью (для отладки)
-- **`start_kiko_hidden_fixed.vbs`** - скрытый запуск (рекомендуется)
-- **`start_kiko_hidden.vbs`** - старый скрытый запуск
-- **`start_kiko.ps1`** - PowerShell запуск
+- **`start_kiko_hidden.vbs`** - скрытый запуск (рекомендуется)
 
 **Автозапуск при старте Windows:**
 ```bash
@@ -66,12 +77,12 @@ python src/main_console.py
 - "ютуб" - открыть YouTube
 
 ### Приложения
-- "дискорд" / "стим" / "телеграм" - запуск приложений
+- "запусти дискорд" / "запусти стим" / "запусти телеграм" - запуск приложений
 - "калькулятор" - запуск калькулятора
 
 ### Игры
-- "дота" - запуск Dota 2
 - "портал" - запуск Portal 2
+- "ночь" - запуск Elden Ring Nightraign
 
 ## ⚙️ Настройка
 
@@ -96,16 +107,18 @@ python src/main_console.py
 ├── install_dependencies.py  # Скрипт установки
 ├── start_kiko.bat     # Запуск с консолью
 ├── start_kiko_hidden.vbs  # Скрытый запуск
-├── start_kiko.ps1     # PowerShell запуск
 ├── scripts/           # Дополнительные скрипты
 │   ├── setup_autostart.bat    # Настройка автозапуска
-│   └── remove_autostart.bat   # Отключение автозапуска
+│   ├── remove_autostart.bat   # Отключение автозапуска
+│   └── start_kiko_hidden.vbs  # Скрытый запуск
 └── src/               # Исходный код
     ├── main.py        # Главный файл (tray icon)
     ├── main_console.py # Консольный режим
     ├── tray_icon.py   # Системная иконка
     ├── assistant/     # Основные модули
     ├── commands/      # YAML файлы команд
+    ├── sounds/        # Wav записи для быстрых ответов
+    ├── wake_words     # Модель распознавания слова активации
     └── scripts/       # PowerShell скрипты
 ```
 
