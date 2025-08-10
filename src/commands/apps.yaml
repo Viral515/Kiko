@@ -37,7 +37,7 @@
   action:
     type: script
     target: "scripts/utils/run_app.ps1"
-    args: ["C:\\Users\\79832\\AppData\\Local\\Discord\\app-1.0.9201\\Discord.exe"]
+    args: ["C:\\Users\\79832\\AppData\\Local\\Discord\\app-1.0.9202\\Discord.exe"]
   responses:
     sound:
       - ok
@@ -124,6 +124,37 @@
     type: script
     target: "scripts/utils/close_app.ps1"
     args: ["Telegram"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: open_idea
+  triggers:
+    - "открой идею"
+    - "запусти идею"
+    - "включи идею"
+  action:
+    type: script
+    target: "scripts/utils/run_app.ps1"
+    args: ["D:\\IDEA\\IntelliJ IDEA 2024.2.3\\bin\\idea64.exe"]
+  responses:
+    sound:
+      - ok
+      - requestCompleted
+    tts:
+
+- id: close_idea
+  triggers:
+    - "закрой идею"
+    - "выруби идею"
+    - "выключи идею"
+    - "сверни идею"
+  action:
+    type: script
+    target: "scripts/utils/close_app.ps1"
+    args: ["IDEA"]
   responses:
     sound:
       - ok

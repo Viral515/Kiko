@@ -40,7 +40,7 @@ class TrayIcon:
         """Запускает ассистента в отдельном потоке"""
         if not self.is_running:
             print("🔄 Запуск ассистента...")
-            print(f"📁 Текущая директория: {os.getcwd()}")
+            print(f" Текущая директория: {os.getcwd()}")
             try:
                 self.is_running = True
                 self.assistant = VoiceAssistant()
@@ -64,7 +64,7 @@ class TrayIcon:
         """Запускает ассистента в фоновом режиме"""
         try:
             print("🎯 Запуск ассистента в фоновом режиме...")
-            self.assistant.run_background()
+            self.assistant.run()
         except Exception as e:
             print(f"❌ Ошибка в работе ассистента: {e}")
             import traceback
