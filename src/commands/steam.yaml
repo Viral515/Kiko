@@ -12,7 +12,7 @@
   action:
     type: script
     target: "scripts/steam/launch_game.ps1"
-    args: ["dota 2"]
+    args: ["570"]
   responses:
     sound:
       - ok
@@ -28,7 +28,7 @@
   action:
     type: script
     target: "scripts/steam/launch_game.ps1"
-    args: ["portal 2"]
+    args: ["620"]
   responses:
     sound:
       - ok
@@ -41,7 +41,7 @@
   action:
     type: script
     target: "scripts/steam/launch_game.ps1"
-    args: ["nightraign"]
+    args: ["2622380"]
   responses:
     sound:
       - ok
