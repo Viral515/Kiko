@@ -8,6 +8,7 @@ from assistant.tools import TOOLS
 import time
 import gc
 import os
+import csv
 
 load_dotenv()
 
@@ -99,24 +100,25 @@ class VoiceAssistant:
             gc.collect()
             print("✅ Ассистент остановлен и память очищена")
 
-# TODO: вынести в отдельный файл для удобной настройки
-WORD_REPLACEMENTS = {
-    "с тем": "стим",
-    "стимул": "стим",
-    "систем": "стим",
-    "семь": "стим",
-    "эскорт": "дискорд",
-    "дискомфорт": "дискорд",
-    "диск": "дискорд",
-    "скотт": "дискорд",
-    "есть корт": "дискорд",
-    "ди спорт": "дискорд",
-    "дискордорд": "дискорд",
-    "ютюб": "ютуб",
-    "найт рэй": "nightraign",
-    "на и трейн": "nightraign",
-    "на и тренинг": "nightraign"
-}
+def load_word_replacements(csv_path):
+    replacements = {}
+    if not os.path.exists(csv_path):
+        print(f"⚠️ Файл нормализации не найден: {csv_path}")
+        return replacements
+
+    try:
+        with open(csv_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f, fieldnames=['wrong', 'correct'], delimiter=',', skipinitialspace=True)
+            for row in reader:
+                if row['wrong'].startswith('#') or row['wrong'].strip() == 'wrong':
+                    continue
+                replacements[row['wrong'].strip().lower()] = row['correct'].strip()
+        print(f"✅ Загружено {len(replacements)} правил нормализации")
+    except Exception as e:
+        print(f"❌ Ошибка загрузки normalization.csv: {e}")
+    return replacements
+
+WORD_REPLACEMENTS = load_word_replacements(os.path.join(os.path.dirname(os.path.dirname(__file__)), "config", "normalization.csv"))
 
 def normalize_text(text):
     text = text.lower()
