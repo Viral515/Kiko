@@ -31,6 +31,8 @@ class WakeWordListener:
             print("👂 Слушаю... Скажи 'джарвис'")
 
             while True:
+                if not self.audio_stream:  # Защита
+                    return False
                 pcm = self.audio_stream.read(self.porcupine.frame_length)
                 pcm = struct.unpack_from("h" * self.porcupine.frame_length, pcm)
                 keyword_index = self.porcupine.process(pcm)
@@ -46,9 +48,22 @@ class WakeWordListener:
         return True
 
     def cleanup(self):
-        if self.porcupine:
-            self.porcupine.delete()
         if self.audio_stream:
-            self.audio_stream.close()
+            try:
+                self.audio_stream.stop_stream()
+                self.audio_stream.close()
+            except:
+                pass
+            self.audio_stream = None
         if self.pa:
-            self.pa.terminate()
+            try:
+                self.pa.terminate()
+            except:
+                pass
+            self.pa = None
+        if self.porcupine:
+            try:
+                self.porcupine.delete()
+            except:
+                pass
+            self.porcupine = None

@@ -83,8 +83,6 @@ class CommandManager:
             self.run_script(target, args)
         elif action_type == "speak":
             print("Karma +1")
-        elif action_type == "exit":
-            sys.exit(0)
 
     def run_script(self, script_path, args):
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

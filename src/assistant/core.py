@@ -6,7 +6,7 @@ from assistant.wake_word import WakeWordListener
 from dotenv import load_dotenv
 from assistant.tools import TOOLS
 import time
-
+import gc
 import os
 
 load_dotenv()
@@ -57,15 +57,49 @@ class VoiceAssistant:
             time.sleep(0.1)
 
     def stop(self):
-        self.running = False
-        if hasattr(self.stt, 'stream'):
-            self.stt.stream.stop_stream()
-            self.stt.stream.close()
-        if hasattr(self.stt, 'p'):
-            self.stt.p.terminate()
-        if hasattr(self, 'wake_word'):
-            self.wake_word.cleanup()
+            """Полная остановка и очистка всех ресурсов"""
+            print("🛑 Начинаю остановку ассистента...")
+            self.running = False
 
+            # 1. Закрываем аудиоустройства
+            if hasattr(self.stt, 'stream'):
+                try:
+                    self.stt.stream.stop_stream()
+                    self.stt.stream.close()
+                    print("✅ Аудиопоток STT закрыт")
+                except Exception as e:
+                    print(f"⚠️ Ошибка при закрытии STT stream: {e}")
+
+            if hasattr(self.stt, 'p'):
+                try:
+                    self.stt.p.terminate()
+                    print("✅ PyAudio завершён")
+                except Exception as e:
+                    print(f"⚠️ Ошибка при завершении PyAudio: {e}")
+
+            # 2. Очищаем wake-word
+            if hasattr(self, 'wake_word'):
+                try:
+                    self.wake_word.cleanup()
+                    print("✅ Porcupine очищен")
+                except Exception as e:
+                    print(f"⚠️ Ошибка при очистке wake-word: {e}")
+
+            # 3. Очищаем TTS (если нужно)
+            # У TTSSpeaker нет активных потоков, но можно добавить cleanup при необходимости
+
+            # 4. Явно удаляем объекты
+            self.stt = None
+            self.tts = None
+            self.commands = None
+            self.llm = None
+            self.wake_word = None
+
+            # 5. Принудительный сбор мусора
+            gc.collect()
+            print("✅ Ассистент остановлен и память очищена")
+
+# TODO: вынести в отдельный файл для удобной настройки
 WORD_REPLACEMENTS = {
     "с тем": "стим",
     "стимул": "стим",

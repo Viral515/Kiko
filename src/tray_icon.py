@@ -37,6 +37,9 @@ class TrayIcon:
         )
     
     def start_assistant(self, icon, item):
+        if self.is_running:
+            print("⚠️ Ассистент уже запущен")
+            return
         """Запускает ассистента в отдельном потоке"""
         if not self.is_running:
             print("🔄 Запуск ассистента...")
@@ -50,15 +53,20 @@ class TrayIcon:
             except Exception as e:
                 print(f"❌ Ошибка запуска ассистента: {e}")
                 self.is_running = False
-    
+
     def stop_assistant(self, icon, item):
         """Останавливает ассистента"""
         if self.is_running:
             self.is_running = False
             if self.assistant:
-                # Останавливаем ассистента
                 self.assistant.stop()
-            print("🛑 Ассистент остановлен")
+                self.assistant = None
+            if self.assistant_thread:
+                self.assistant_thread.join(timeout=2.0)
+                if self.assistant_thread.is_alive():
+                    print("⚠️ Поток ассистента не завершился за отведённое время")
+                self.assistant_thread = None
+            print("✅ Ассистент остановлен")
     
     def run_assistant(self):
         """Запускает ассистента в фоновом режиме"""

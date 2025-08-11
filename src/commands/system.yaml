@@ -11,18 +11,4 @@
       - thanks
       - tyPrime
     tts:
-
-- id: shutdown
-  triggers:
-    - "пока"
-    - "до свидания"
-    - "выключись"
-    - "спокойной ночи"
-    - "пора спать"
-  action:
-    type: exit
-    target: "none"
-  responses:
-    sound:
-    tts:
-      - "До свидания, сэр!"
+      - "Всегда к вашим услугам, сэр."

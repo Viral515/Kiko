@@ -1,10 +1,9 @@
-# Запуск игр в Steam
 param(
     [string]$GameName,
     [string]$SteamPath = "C:\Program Files (x86)\Steam\steam.exe"
 )
 
-# Словарь игр с их Steam App ID
+# TODO: вынести список игр в отдельный файл
 $games = @{
     "dota" = "570"
     "дота" = "570"
@@ -15,7 +14,6 @@ $games = @{
     "nightraign" = "2622380"
 }
 
-# Функция для поиска игры
 function Find-Game {
     param([string]$Name)
     
@@ -29,7 +27,6 @@ function Find-Game {
     return $null
 }
 
-# Функция для запуска игры
 function Launch-SteamGame {
     param([string]$AppId)
     
@@ -48,7 +45,6 @@ function Launch-SteamGame {
     }
 }
 
-# Основная логика
 if ($GameName) {
     $appId = Find-Game -Name $GameName
     
