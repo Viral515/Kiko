@@ -37,9 +37,6 @@
 
 - id: launch_nightraign
   triggers:
-    - "ночь"
-    - "ночь ранга"
-    - "запусти ночь"
     - "запусти nightraign"
   action:
     type: script

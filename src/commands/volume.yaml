@@ -3,7 +3,6 @@
   triggers:
     - "выключи звук"
     - "заглуши звук"
-    - "мут"
     - "тишина"
   action:
     type: script
@@ -17,8 +16,7 @@
 - id: volume_unmute
   triggers:
     - "включи звук"
-    - "включи громкость"
-    - "анмьют"
+    - "верни звук"
   action:
     type: script
     target: "scripts/utils/volume_control.ps1"

@@ -155,7 +155,7 @@
   action:
     type: script
     target: "scripts/utils/close_app.ps1"
-    args: ["IDEA"]
+    args: ["idea64"]
   responses:
     sound:
       - ok
